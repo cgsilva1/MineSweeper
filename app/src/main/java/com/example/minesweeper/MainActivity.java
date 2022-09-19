@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
             //NEED TO GO TO NEW PAGE
             public void onFinish() {
                 mineSweeperGame.outOfTime();
-//                mineSweeperGame.getMineGrid().showBombs(); //show all bombs
+                mineSweeperGame.getMineGrid().showBombs(); //show all bombs
                 mineGridRecyclerAdapter.setCells(mineSweeperGame.getMineGrid().getCells());
-                mineSweeperGame.isLoose();
+//                mineSweeperGame.isLoose();
             }
         };
 

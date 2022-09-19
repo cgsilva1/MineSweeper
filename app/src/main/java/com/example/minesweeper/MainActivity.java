@@ -65,25 +65,7 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
 
         //FLAG-PICK Chooser
         flag = findViewById(R.id.activity_main_pick);
-        flag.setOnClickListener(new View.OnClickListener() { //when click chagne to pick
-            @Override
-            public void onClick(View view) {
-                mineSweeperGame.toggleMode(view);
-//                flag = findViewById(R.id.activity_main_pick);
-                if (mineSweeperGame.isFlagMode()) { //once clicked on flag can now flag cells
-//                    flag = findViewById(R.id.activity_main_pick);
-                    GradientDrawable border = new GradientDrawable();
-                    border.setColor(0xFFFFFFFF);
-                    border.setStroke(1, 0xFF000000); //setting flag
-                    flag.setBackground(border);
-                } else {
-//                    flag = findViewById(R.id.activity_main_flag);
-                    GradientDrawable border = new GradientDrawable();
-                    border.setColor(0xFFFFFFFF);
-                    flag.setBackground(border);
-                }
-            }
-        });
+
     }
 
     @Override

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CSCI 310 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Caroline Silva</string>
+    <string name="name">Caroline Silva</string>
+    <string name="flag">🚩</string>
+    <string name="bomb">💣</string>
+    <string name="pick">\u26CF</string>
+    <string name="clock">⏱</string>
+    <string name="default_count">0</string>
+</resources>

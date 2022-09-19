@@ -117,7 +117,18 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
 
         }
 
-
+        if (mineSweeperGame.isWin()) {
+            countDownTimer.cancel(); //stop the timer
+            String time = String.valueOf(secondsElapsed);
+            //CREATE MESSAGE SAYING "GAME WON"
+            String wonMessage = "You Won \n Good Job!";
+//            Intent intent = new Intent(this, DisplayResults.class);
+            intent.putExtra("com.example.cellClick.MESSAGE", wonMessage);
+            intent.putExtra("com.example.cellClick.TIME", time);
+            mineSweeperGame.getMineGrid().showBombs();
+            //need to wait for user to click again to redirect to new page
+            startActivity(intent);//goes to results page
+        }
 
         mineGridRecyclerAdapter.setCells(mineSweeperGame.getMineGrid().getCells());
     }

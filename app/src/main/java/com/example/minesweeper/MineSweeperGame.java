@@ -15,6 +15,7 @@ public class MineSweeperGame {
     private int numberBombs;
     private boolean timeExpired;
 
+
     public MineSweeperGame(int size, int col, int numberBombs) {
         this.gameOver = false;
         this.flagMode = false;

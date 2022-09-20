@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements OnCellClickListener {
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
     private CountDownTimer countDownTimer;
     private int secondsElapsed;
     private boolean run;
+    private boolean win = false;
+    private boolean lose = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,31 +68,82 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
 
         //FLAG-PICK Chooser
         flag = findViewById(R.id.activity_main_pick);
-
+        flag.setOnClickListener(new View.OnClickListener() { //when click chagne to pick
+            @Override
+            public void onClick(View view) {
+                mineSweeperGame.toggleMode(view);
+//                flag = findViewById(R.id.activity_main_pick);
+                if (mineSweeperGame.isFlagMode()) { //once clicked on flag can now flag cells
+//                    flag = findViewById(R.id.activity_main_pick);
+                    GradientDrawable border = new GradientDrawable();
+                    border.setColor(0xFFFFFFFF);
+                    border.setStroke(1, 0xFF000000); //setting flag
+                    flag.setBackground(border);
+                } else {
+//                    flag = findViewById(R.id.activity_main_flag);
+                    GradientDrawable border = new GradientDrawable();
+                    border.setColor(0xFFFFFFFF);
+                    flag.setBackground(border);
+                }
+            }
+        });
     }
 
     @Override
     public void cellClick(Cell cell) {
         mineSweeperGame.handleCellClick(cell);
-
         flagsLeft.setText(String.format("%02d", mineSweeperGame.getNumberBombs() - mineSweeperGame.getFlagCount()));
 
         Intent intent = new Intent(this, DisplayResults.class);
 
         //go to new page & get time
-        if (mineSweeperGame.isLoose()) {
-            //CREATE MESSAGE SAYING "GAME LOST"
+
+
+        if (lose) {
             String lostMessage = "You Lost \n Nice Try!";
             countDownTimer.cancel(); //stop timer
             String time = String.valueOf(secondsElapsed); //get time of when game is stopped
 
             intent.putExtra("com.example.cellClick.MESSAGE", lostMessage);
             intent.putExtra("com.example.cellClick.TIME", time);
-            mineSweeperGame.getMineGrid().showBombs(); //reveal all bombs
-            //need to wait for user to click again to redirect to new page
-            startActivity(intent); //goes to results page
+            startActivity(intent);
 
+            //need to wait for user to click again to redirect to new page
+         //   startActivity(intent); //goes to results page
 //            grid.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    startActivity(intent); //goes to results page
+//                }
+//            });
+            return;
+        }
+
+        if (win) {
+            countDownTimer.cancel(); //stop the timer
+            String time = String.valueOf(secondsElapsed);
+            //CREATE MESSAGE SAYING "GAME WON"
+            String wonMessage = "You Won \n Good Job!";
+            mineSweeperGame.getMineGrid().showBombs();
+            intent.putExtra("com.example.cellClick.MESSAGE", wonMessage);
+            intent.putExtra("com.example.cellClick.TIME", time);
+
+            //need to wait for user to click again to redirect to new page
+            startActivity(intent);//goes to results page
+            return;
+
+        }
+        win = mineSweeperGame.isWin();
+        lose = mineSweeperGame.isLoose();
+
+        if(lose){
+            mineSweeperGame.getMineGrid().showBombs(); //reveal all bombs
+        }
+        if(win){
+            mineSweeperGame.getMineGrid().showBombs(); //reveal all bombs
+        }
+//        RecyclerView root = (RecyclerView) findViewById(R.id.activity_main_grid);
+//            root.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
 //                    startActivity(intent); //goes to results page
@@ -97,21 +151,8 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
 //            });
 
 
-        }
-
-        if (mineSweeperGame.isWin()) {
-            countDownTimer.cancel(); //stop the timer
-            String time = String.valueOf(secondsElapsed);
-            //CREATE MESSAGE SAYING "GAME WON"
-            String wonMessage = "You Won \n Good Job!";
-//            Intent intent = new Intent(this, DisplayResults.class);
-            intent.putExtra("com.example.cellClick.MESSAGE", wonMessage);
-            intent.putExtra("com.example.cellClick.TIME", time);
-            mineSweeperGame.getMineGrid().showBombs();
-            //need to wait for user to click again to redirect to new page
-            startActivity(intent);//goes to results page
-        }
 
         mineGridRecyclerAdapter.setCells(mineSweeperGame.getMineGrid().getCells());
+
     }
 }
